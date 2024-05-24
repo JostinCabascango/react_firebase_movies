@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Welcome from './components/Welcome';
 import MoviesList from './pages/MoviesList';
@@ -7,9 +7,11 @@ import MoviesAdd from './pages/MoviesAdd';
 
 const App = () => (
   <Router>
-    <Route exact path="/" component={Welcome} />
-    <Route path="/movies/list" component={MoviesList} />
-    <Route path="/movies/add" component={MoviesAdd} />
+    <Routes>
+      <Route path="/" element={<Welcome />} />
+      <Route path="/movies/list" element={<MoviesList />} />
+      <Route path="/movies/add" element={<MoviesAdd />} />
+    </Routes>
   </Router>
 );
 
