@@ -3,17 +3,17 @@ import { getMovies } from '../firebase/db';
 import MovieCard from '../components/MovieCard';
 
 const MoviesList = () => {
-  const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    getMovies().then(setMovies);
-  }, []);
+    useEffect(() => {
+        getMovies().then(setMovies);
+    }, []);
 
-  return (
-    <div>
-      {movies.map((movie) => <MovieCard key={movie.id} {...movie} />)}
-    </div>
-  );
+    return (
+        <div>
+            {movies.map((movie) => <MovieCard key={movie.id} {...movie} />)}
+        </div>
+    );
 };
 
 export default MoviesList;
