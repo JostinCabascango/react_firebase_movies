@@ -1,8 +1,9 @@
 import React from 'react';
+import {FaEdit, FaTrashAlt} from "react-icons/fa";
 
 const MovieCard = ({title, image, rate, direction, onEdit, onDelete}) => (
     <article
-        className="group relative bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+        className="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
         <div className="w-full overflow-hidden">
             <img
                 src={image}
@@ -11,7 +12,7 @@ const MovieCard = ({title, image, rate, direction, onEdit, onDelete}) => (
             />
         </div>
         <section className="p-4">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-xl font-bold text-gray-800">
                 {title}
             </h3>
             <p className="text-gray-600">Dirección: {direction}</p>
@@ -20,16 +21,16 @@ const MovieCard = ({title, image, rate, direction, onEdit, onDelete}) => (
                 <button
                     onClick={onEdit}
                     aria-label={`Editar ${title}`}
-                    className="text-white bg-blue-600 hover:bg-blue-800 rounded-lg px-4 py-2 transition duration-300 ease-in-out"
+                    className="flex items-center justify-center p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
-                    Editar
+                    <FaEdit className="w-5 h-5"/>
                 </button>
                 <button
                     onClick={onDelete}
                     aria-label={`Eliminar ${title}`}
-                    className="text-white bg-red-600 hover:bg-red-800 rounded-lg px-4 py-2 transition duration-300 ease-in-out"
+                    className="flex items-center justify-center p-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
                 >
-                    Eliminar
+                    <FaTrashAlt className="w-5 h-5"/>
                 </button>
             </div>
         </section>
