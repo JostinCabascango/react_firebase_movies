@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Card = ({ title, link }) => (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-3">
-        <div className="md:flex">
-            <div className="p-8">
-                <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{title}</div>
-                <Link to={link} className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Ir a {title}</Link>
+    <div className="group relative w-full p-4">
+        <Link to={link} className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out w-full">
+            <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-gray-600 transition-colors duration-300">{title}</h3>
             </div>
-        </div>
+        </Link>
     </div>
 );
 

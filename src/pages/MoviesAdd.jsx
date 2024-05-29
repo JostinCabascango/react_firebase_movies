@@ -1,31 +1,73 @@
-import React, { useState } from 'react';
-import { addMovie } from '../firebase/db';
+import {useParams, useNavigate} from 'react-router-dom';
+import {addMovie, updateMovie, getMovie} from '../firebase/db';
+import ErrorModal from "../components/ErrorModal.jsx";
+import MovieForm from "../components/MovieForm.jsx";
+import {useState, useEffect} from "react";
 
-const MoviesAdd = () => {
-    const [movie, setMovie] = useState({ title: '', description: '', direction: '', image: '', rate: '', year: '', duration: '' });
-
-    const handleChange = (e) => {
-        setMovie({ ...movie, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        addMovie(movie);
-        setMovie({ title: '', description: '', direction: '', image: '', rate: '', year: '', duration: '' });
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="title" value={movie.title} placeholder="Title" onChange={handleChange} />
-            <input type="text" name="description" value={movie.description} placeholder="Description" onChange={handleChange} />
-            <input type="text" name="direction" value={movie.direction} placeholder="Direction" onChange={handleChange} />
-            <input type="text" name="image" value={movie.image} placeholder="Image" onChange={handleChange} />
-            <input type="number" name="rate" value={movie.rate} min="0" max="5" placeholder="Rate (0-5)" onChange={handleChange} />
-            <input type="number" name="year" value={movie.year} placeholder="Year" onChange={handleChange} />
-            <input type="number" name="duration" value={movie.duration} placeholder="Duration" onChange={handleChange} />
-            <button type="submit">Add</button>
-        </form>
-    );
+const initialMovieState = {
+    title: '',
+    description: '',
+    direction: '',
+    image: '',
+    rate: '',
+    year: '',
+    duration: ''
 };
 
-export default MoviesAdd;
+const MovieFormPage = () => {
+    const [movie, setMovie] = useState(initialMovieState);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const {id} = useParams();
+
+    useEffect(() => {
+        if (id) {
+            getMovie(id).then(setMovie);
+        }
+    }, [id]);
+
+    const handleChange = (e) => {
+        setMovie({...movie, [e.target.name]: e.target.value});
+    };
+
+    const resetForm = () => {
+        setMovie(initialMovieState);
+    };
+
+    const isValidMovie = (movie) => {
+        return movie.title && movie.description && movie.direction && movie.image && movie.rate && movie.year && movie.duration;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (isValidMovie(movie)) {
+            try {
+                if (id) {
+                    await updateMovie(id, movie);
+                } else {
+                    await addMovie(movie);
+                }
+                resetForm();
+                navigate('/movies/list');
+            } catch (error) {
+                setError('Failed to save movie');
+            }
+        } else {
+            setError('Please fill in all fields');
+        }
+    };
+    const handleCloseErrorModal = () => {
+        setError(null);
+    };
+
+    const currentYear = new Date().getFullYear();
+
+    return (
+        <div className="flex justify-center mt-10">
+            {error && <ErrorModal message={error} onClose={handleCloseErrorModal}/>}
+            <MovieForm movie={movie} handleChange={handleChange} handleSubmit={handleSubmit}
+                       currentYear={currentYear} isEditing={!!id}/>
+        </div>
+    );
+};
+export default MovieFormPage;
